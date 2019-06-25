@@ -11,29 +11,28 @@ sdr = adi.Pluto()
 sdr.rx_rf_bandwidth = 4000000
 sdr.rx_lo = 2000000000
 sdr.tx_lo = 2000000000
+sdr.tx_cyclic_buffer = True
+sdr.tx_hardwaregain = -30
+sdr.gain_control_mode = 'slow_attack'
 
 # Read properties
 print("RX LO %s" % (sdr.rx_lo))
 
 # Create a sinewave waveform
-RXFS = int(sdr.sample_rate)
+fs = int(sdr.sample_rate)
 fc = 10000
 N = 1024
-ts = 1/float(RXFS)
+ts = 1/float(fs)
 t = np.arange(0, N*ts, ts)
 i = np.sin(2*np.pi*t*fc) * 2**14
 q = np.cos(2*np.pi*t*fc) * 2**14
-iq = np.empty((i.size + q.size,), dtype=i.dtype)
-iq[0::2] = i
-iq[1::2] = q
-iq = np.int16(iq)
+iq = i + 1j*q
 
-# sdr.tx(iq)
-fs = RXFS
+# Send data
+sdr.tx(iq)
+
 # Collect data
-# fs = int(sdr.sample_rate)
 for r in range(20):
-    # x = sdr.rx2()
     x = sdr.rx()
     f, Pxx_den = signal.periodogram(x[0], fs)
     plt.clf()
