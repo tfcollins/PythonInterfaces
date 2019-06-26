@@ -3,6 +3,7 @@ from adi.RxTx import RxTx
 from adi.ContextManager import ContextManager
 
 class ad9361(RxTx,ContextManager):
+    """ AD9361 Transceiver """
     complex_data = True
     rx_channel_names = ['voltage0','voltage1','voltage2','voltage3']
     tx_channel_names = ['voltage0','voltage1','voltage2','voltage3']
@@ -97,10 +98,12 @@ class ad9361(RxTx,ContextManager):
         self.set_iio_attr("altvoltage1","frequency",True,value)
 
 class ad9364(ad9361):
+    """ AD9364 Transceiver """
     rx_channel_names = ['voltage0','voltage1']
     tx_channel_names = ['voltage0','voltage1']
     rx_channel_mapping=[0]
     tx_channel_mapping=[0]
 
 class ad9363(ad9361):
+    """ AD9363 Transceiver """
     pass
