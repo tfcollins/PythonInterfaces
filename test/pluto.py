@@ -5,7 +5,7 @@ import logging
 import unittest
 import numpy as np
 from adi import Pluto
-from adi import iio as iio
+import iio
 
 class TestPluto(unittest.TestCase):
 
@@ -47,11 +47,11 @@ class TestPluto(unittest.TestCase):
         sdr.tx_cyclic_buffer = True
         sdr.tx_hardwaregain = -30
         sdr.gain_control_mode = 'slow_attack'
-        sdr.rx_buffer_size = 2**18
+        sdr.rx_buffer_size = 2**20
         # Create a sinewave waveform
         RXFS = int(sdr.sample_rate)
         fc = RXFS*0.1
-        N = 2**12
+        N = 2**15
         ts = 1/float(RXFS)
         t = np.arange(0, N*ts, ts)
         i = np.cos(2*np.pi*t*fc) * 2**15 * 0.5
@@ -62,7 +62,6 @@ class TestPluto(unittest.TestCase):
         for k in range(5):
             data = sdr.rx()
 
-        data = data[0]
         tone_freq = self.freq_est(data,RXFS)
 
         if self.do_plots:
@@ -76,7 +75,7 @@ class TestPluto(unittest.TestCase):
             plt.show()
 
         diff = np.abs(tone_freq - fc)
-        self.assertGreater(10000,diff,'Frequency offset')
+        self.assertGreater(fc*0.01,diff,'Frequency offset')
 
 if __name__=='__main__':
     from os import path
@@ -86,5 +85,4 @@ if __name__=='__main__':
     except:
         print('No Pluto found')
         sys.exit(1)
-
-unittest.main()
+    unittest.main()

@@ -1,6 +1,6 @@
 
 
-class Attribute():
+class attribute():
 
     def set_iio_attr_str(self,channel_name,attr_name,output,value):
       channel = self.ctrl.find_channel(channel_name, output)

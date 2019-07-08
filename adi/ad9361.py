@@ -1,8 +1,8 @@
 
-from adi.RxTx import RxTx
-from adi.ContextManager import ContextManager
+from adi.rx_tx import rx_tx
+from adi.context_manager import context_manager
 
-class ad9361(RxTx,ContextManager):
+class ad9361(rx_tx,context_manager):
     """ AD9361 Transceiver """
     complex_data = True
     rx_channel_names = ['voltage0','voltage1','voltage2','voltage3']
@@ -13,13 +13,13 @@ class ad9361(RxTx,ContextManager):
 
     def __init__(self,uri=""):
 
-        ContextManager.__init__(self, uri, self.device_name)
+        context_manager.__init__(self, uri, self.device_name)
 
         self.ctrl = self.ctx.find_device("ad9361-phy")
         self.rxadc = self.ctx.find_device("cf-ad9361-lpc")
         self.txdac = self.ctx.find_device("cf-ad9361-dds-core-lpc")
 
-        RxTx.__init__(self)
+        rx_tx.__init__(self)
 
 
     @property

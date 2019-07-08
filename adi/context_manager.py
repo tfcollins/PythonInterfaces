@@ -2,7 +2,7 @@ from __future__ import print_function
 import sys
 import iio
 
-class ContextManager(object):
+class context_manager(object):
     uri = ''
     def __init__(self, uri="", device_name=""):
         self.uri = uri

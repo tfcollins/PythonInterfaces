@@ -1,17 +1,17 @@
 import numpy as np
-from adi.DDS import DDS
-from adi.Attribute import Attribute
+from adi.dds import dds
+from adi.attribute import attribute
 from scipy import signal
 import sys
 import iio
 
-class Phy(Attribute):
+class phy(attribute):
     ctrl = []
 
     def __del__(self):
         self.ctrl = []
 
-class Rx(Attribute):
+class rx(attribute):
     rxadc = []
     rx_channel_names = []
     rx_buffer_size = 1024
@@ -46,6 +46,9 @@ class Rx(Attribute):
         for c in range(int(self.num_rx_channels/2)):
             sig.append(x[indx::self.num_rx_channels] + 1j*x[indx+1::self.num_rx_channels])
             indx = indx + 2
+        # Don't return list if a single channel
+        if indx==2:
+            return sig[0]
         return sig
 
     def rx_non_complex(self):
@@ -58,6 +61,9 @@ class Rx(Attribute):
         sig = []
         for c in range(self.num_rx_channels):
             sig.append(x[c::self.num_rx_channels])
+        # Don't return list if a single channel
+        if self.num_rx_channels==1:
+            return sig[0]
         return sig
 
     def rx(self):
@@ -66,7 +72,7 @@ class Rx(Attribute):
         else:
             return self.rx_non_complex()
 
-class Tx(DDS,Attribute):
+class tx(dds,attribute):
     txdac = []
     tx_channel_names = []
     tx_buffer_size = 1024
@@ -75,7 +81,7 @@ class Tx(DDS,Attribute):
     tx_channel_mapping = []
 
     def __init__(self):
-        DDS.__init__(self)
+        dds.__init__(self)
 
     def __del__(self):
         self.txdac = []
@@ -108,15 +114,14 @@ class Tx(DDS,Attribute):
         if len(data) != self.tx_buff_length:
             raise
         # Send data to buffer
-        self.txbuf.write(data)
+        self.txbuf.write(bytearray(data))
         self.txbuf.push()
 
-class RxTx(Rx,Tx,Phy):
+class rx_tx(rx,tx,phy):
 
     complex_data = False
 
     def __init__(self):
-        print(self.rx_channel_mapping)
         self.num_rx_channels = len(self.rx_channel_names)
         if self.complex_data:
             if max(self.rx_channel_mapping) > ((self.num_rx_channels)/2 - 1):
@@ -131,15 +136,15 @@ class RxTx(Rx,Tx,Phy):
         else:
             if max(self.tx_channel_mapping) > ((self.num_tx_channels) - 1):
                 raise Exception("TX mapping exceeds available channels")
-        Tx.__init__(self)
+        tx.__init__(self)
 
     def __del__(self):
-        Rx.__del__(self)
-        Tx.__del__(self)
-        Phy.__del__(self)
+        rx.__del__(self)
+        tx.__del__(self)
+        phy.__del__(self)
 
     def init_channels(self, istx = False):
         if istx:
-            Tx.init_channels(self)
+            tx.init_channels(self)
         else:
-            Rx.init_channels(self)
+            rx.init_channels(self)
