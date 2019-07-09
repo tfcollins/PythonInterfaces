@@ -6,7 +6,7 @@
 Analog Devices Hardware Python Interfaces
 =====================================================================
 
-This module provides a convient way to access and control ADI hardware from Python through existing IIO drivers.
+This module provides a convenient way to access and control ADI hardware from Python through existing IIO drivers.
 
 Requirements
 
@@ -41,17 +41,16 @@ AD936X Family
 
 FPGA Features
 ===================
-.. automodule:: adi.DDS
+.. automodule:: adi.dds
    :members:
 
 Common
 ===================
-.. automodule:: adi.RxTx
+.. automodule:: adi.rx_tx
    :members:
 
-.. automodule:: adi.ContextManager
+.. automodule:: adi.context_manager
    :members:
 
-.. automodule:: adi.Attribute
+.. automodule:: adi.attribute
    :members:
-
