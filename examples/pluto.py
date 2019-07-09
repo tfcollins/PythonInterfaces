@@ -34,7 +34,7 @@ sdr.tx(iq)
 # Collect data
 for r in range(20):
     x = sdr.rx()
-    f, Pxx_den = signal.periodogram(x[0], fs)
+    f, Pxx_den = signal.periodogram(x, fs)
     plt.clf()
     plt.semilogy(f, Pxx_den)
     plt.ylim([1e-7, 1e2])
