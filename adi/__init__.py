@@ -11,6 +11,7 @@ class ad9364(ad9364):
 
 class Pluto(ad9364):
     device_name = "PlutoSDR"
+    uri_auto = "ip:pluto.local"
     pass
 
 
