@@ -14,5 +14,9 @@ class Pluto(ad9364):
     uri_auto = "ip:pluto.local"
     pass
 
+from adi.ad9371 import *
+
+class ad9371(ad9371):
+    pass
 
 name = "Analog Devices Hardware Interfaces"
