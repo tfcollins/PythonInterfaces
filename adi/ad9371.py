@@ -8,8 +8,8 @@ class ad9371(rx_tx,context_manager):
     rx_channel_names = ['voltage0_i','voltage0_q','voltage1_i','voltage1_q']
     tx_channel_names = ['voltage0','voltage1','voltage2','voltage3']
     device_name = ""
-    rx_channel_mapping=[0,1]
-    tx_channel_mapping=[0,1]
+    rx_enabled_channels=[0,1]
+    tx_enabled_channels=[0,1]
 
     def __init__(self,uri=""):
 
@@ -19,9 +19,8 @@ class ad9371(rx_tx,context_manager):
         self.rxadc = self.ctx.find_device("axi-ad9371-rx-hpc")
         self.rxobs = self.ctx.find_device("axi-ad9371-rx-obs-hpc")
         self.txdac = self.ctx.find_device("axi-ad9371-tx-hpc")
-        print(dir(self.ctrl))
 
-        rx_tx.__init__(self)
+        rx_tx.__init__(self, self.rx_enabled_channels, self.tx_enabled_channels)
 
 
     @property

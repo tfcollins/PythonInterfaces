@@ -20,12 +20,12 @@ print("RX LO %s" % (sdr.rx_lo))
 
 # Create a sinewave waveform
 fs = int(sdr.sample_rate)
-fc = 10000
+fc = 3000000
 N = 1024
 ts = 1/float(fs)
 t = np.arange(0, N*ts, ts)
-i = np.sin(2*np.pi*t*fc) * 2**14
-q = np.cos(2*np.pi*t*fc) * 2**14
+i = np.cos(2*np.pi*t*fc) * 2**14
+q = np.sin(2*np.pi*t*fc) * 2**14
 iq = i + 1j*q
 
 # Send data

@@ -9,9 +9,7 @@ class ad9363(ad9363):
 class ad9364(ad9364):
     pass
 
-class Pluto(ad9364):
-    device_name = "PlutoSDR"
-    uri_auto = "ip:pluto.local"
+class Pluto(Pluto):
     pass
 
 from adi.ad9371 import *

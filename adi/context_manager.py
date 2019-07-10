@@ -3,10 +3,8 @@ import sys
 import iio
 
 class context_manager(object):
-    uri = ''
     uri_auto = 'ip:analog'
     ctx = None
-    device_name = ''
 
     def __init__(self, uri="", device_name=""):
         self.uri = uri

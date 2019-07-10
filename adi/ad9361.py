@@ -8,8 +8,8 @@ class ad9361(rx_tx,context_manager):
     rx_channel_names = ['voltage0','voltage1','voltage2','voltage3']
     tx_channel_names = ['voltage0','voltage1','voltage2','voltage3']
     device_name = ""
-    rx_channel_mapping=[0,1]
-    tx_channel_mapping=[0,1]
+    rx_enabled_channels=[0,1]
+    tx_enabled_channels=[0,1]
 
     def __init__(self,uri=""):
 
@@ -19,8 +19,7 @@ class ad9361(rx_tx,context_manager):
         self.rxadc = self.ctx.find_device("cf-ad9361-lpc")
         self.txdac = self.ctx.find_device("cf-ad9361-dds-core-lpc")
 
-        rx_tx.__init__(self)
-
+        rx_tx.__init__(self, self.rx_enabled_channels, self.tx_enabled_channels)
 
     @property
     def gain_control_mode(self):
@@ -29,7 +28,7 @@ class ad9361(rx_tx,context_manager):
         return self.get_iio_attr("voltage0","gain_control_mode",False)
 
     @gain_control_mode.setter
-    def gain_control_mode(self,value):
+    def gain_control_mode(self, value):
         self.set_iio_attr_str("voltage0","gain_control_mode",False,value)
 
     @property
@@ -39,7 +38,7 @@ class ad9361(rx_tx,context_manager):
         return self.get_iio_attr("voltage0","hardwaregain",False)
 
     @rx_hardwaregain.setter
-    def rx_hardwaregain(self,value):
+    def rx_hardwaregain(self, value):
         if self.gain_control_mode == 'manual':
             self.set_iio_attr("voltage0","hardwaregain",False,value)
 
@@ -49,7 +48,7 @@ class ad9361(rx_tx,context_manager):
         return self.get_iio_attr("voltage0","hardwaregain",True)
 
     @tx_hardwaregain.setter
-    def tx_hardwaregain(self,value):
+    def tx_hardwaregain(self, value):
         self.set_iio_attr("voltage0","hardwaregain",True,value)
 
     @property
@@ -58,7 +57,7 @@ class ad9361(rx_tx,context_manager):
         return self.get_iio_attr("voltage0","rf_bandwidth",False)
 
     @rx_rf_bandwidth.setter
-    def rx_rf_bandwidth(self,value):
+    def rx_rf_bandwidth(self, value):
         self.set_iio_attr("voltage0","rf_bandwidth",False,value)
 
     @property
@@ -67,7 +66,7 @@ class ad9361(rx_tx,context_manager):
         return self.get_iio_attr("voltage0","rf_bandwidth",True)
 
     @tx_rf_bandwidth.setter
-    def tx_rf_bandwidth(self,value):
+    def tx_rf_bandwidth(self, value):
         self.set_iio_attr("voltage0","rf_bandwidth",True,value)
 
     @property
@@ -76,7 +75,7 @@ class ad9361(rx_tx,context_manager):
         return self.get_iio_attr("voltage0","sampling_frequency",False)
 
     @sample_rate.setter
-    def sample_rate(self,value):
+    def sample_rate(self, value):
         self.set_iio_attr("voltage0","sampling_frequency",False,value)
 
     @property
@@ -85,7 +84,7 @@ class ad9361(rx_tx,context_manager):
         return self.get_iio_attr("altvoltage0","frequency",True)
 
     @rx_lo.setter
-    def rx_lo(self,value):
+    def rx_lo(self, value):
         self.set_iio_attr("altvoltage0","frequency",True,value)
 
     @property
@@ -94,16 +93,22 @@ class ad9361(rx_tx,context_manager):
         return self.get_iio_attr("altvoltage1","frequency",True)
 
     @tx_lo.setter
-    def tx_lo(self,value):
+    def tx_lo(self, value):
         self.set_iio_attr("altvoltage1","frequency",True,value)
 
 class ad9364(ad9361):
     """ AD9364 Transceiver """
     rx_channel_names = ['voltage0','voltage1']
     tx_channel_names = ['voltage0','voltage1']
-    rx_channel_mapping=[0]
-    tx_channel_mapping=[0]
+    rx_enabled_channels=[0]
+    tx_enabled_channels=[0]
 
 class ad9363(ad9361):
     """ AD9363 Transceiver """
+    pass
+
+class Pluto(ad9364):
+    """ PlutoSDR Evaluation Platform """
+    device_name = "PlutoSDR"
+    uri_auto = "ip:pluto.local"
     pass

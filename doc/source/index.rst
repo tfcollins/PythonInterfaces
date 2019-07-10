@@ -38,6 +38,10 @@ AD936X Family
 .. automodule:: adi.ad9361
    :members:
 
+AD9371
+===================
+.. automodule:: adi.ad9371
+   :members:
 
 FPGA Features
 ===================
