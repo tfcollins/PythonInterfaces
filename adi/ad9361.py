@@ -22,6 +22,20 @@ class ad9361(rx_tx,context_manager):
         rx_tx.__init__(self, self.rx_enabled_channels, self.tx_enabled_channels)
 
     @property
+    def filter(self):
+        """Load FIR filter file. Provide path to filter file to attribute"""
+        return self.get_iio_dev_attr("filter_fir_config")
+
+    @filter.setter
+    def filter(self, value):
+        with open(value, 'r') as file:
+            data = file.read()
+        self.sample_rate = 3000000
+        self.set_iio_attr_str("out","voltage_filter_fir_en",False,0)
+        self.set_iio_dev_attr_str("filter_fir_config",data)
+        self.set_iio_attr_str("out","voltage_filter_fir_en",False,1)
+
+    @property
     def gain_control_mode(self):
         """gain_control_mode: Mode of receive path AGC. Options are:
         slow_attack, fast_attack, manual"""

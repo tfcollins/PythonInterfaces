@@ -42,7 +42,7 @@ class dds(attribute):
     @property
     def dds_frequencies(self):
         """ Frequencies of DDSs in Hz"""
-        self.read_dds("frequency")
+        return self.read_dds("frequency")
 
     @dds_frequencies.setter
     def dds_frequencies(self,value):
@@ -51,7 +51,7 @@ class dds(attribute):
     @property
     def dds_scales(self):
         """ Scale of DDS signal generators"""
-        self.read_dds("scale")
+        return self.read_dds("scale")
 
     @dds_scales.setter
     def dds_scales(self,value):
@@ -60,7 +60,7 @@ class dds(attribute):
     @property
     def dds_enabled(self):
         """ DDS generator enable state """
-        self.read_dds("raw")
+        return self.read_dds("raw")
 
     @dds_enabled.setter
     def dds_enabled(self,value):
