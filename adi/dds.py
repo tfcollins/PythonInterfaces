@@ -1,6 +1,7 @@
 from adi.attribute import attribute
 import numpy as np
 
+
 class dds(attribute):
     """ DDS Signal generators: Each reference design contains two DDSs per channel.
         this allows for two complex tones to be generated per complex channel.
@@ -11,11 +12,11 @@ class dds(attribute):
     dds_enabled = []
 
     def __init__(self):
-        self.dds_frequencies = np.zeros(self.num_tx_channels*2)
-        self.dds_scales = np.zeros(self.num_tx_channels*2)
-        self.dds_enabled = np.zeros(self.num_tx_channels*2, dtype=bool)
+        self.dds_frequencies = np.zeros(self.num_tx_channels * 2)
+        self.dds_scales = np.zeros(self.num_tx_channels * 2)
+        self.dds_enabled = np.zeros(self.num_tx_channels * 2, dtype=bool)
 
-    def update_dds(self,attr,value):
+    def update_dds(self, attr, value):
         indx = 0
         for chan in self.txdac.channels:
             if not chan.name:
@@ -26,7 +27,7 @@ class dds(attribute):
                 chan.attrs[attr].value = str(value[indx])
             indx = indx + 1
 
-    def read_dds(self,attr):
+    def read_dds(self, attr):
         values = []
         indx = 0
         for chan in self.txdac.channels:
@@ -37,7 +38,7 @@ class dds(attribute):
         return values
 
     def disable_dds(self):
-        self.dds_enabled = np.zeros(self.num_tx_channels*2, dtype=bool)
+        self.dds_enabled = np.zeros(self.num_tx_channels * 2, dtype=bool)
 
     @property
     def dds_frequencies(self):
@@ -45,8 +46,8 @@ class dds(attribute):
         return self.read_dds("frequency")
 
     @dds_frequencies.setter
-    def dds_frequencies(self,value):
-        self.update_dds("frequency",value)
+    def dds_frequencies(self, value):
+        self.update_dds("frequency", value)
 
     @property
     def dds_scales(self):
@@ -54,8 +55,8 @@ class dds(attribute):
         return self.read_dds("scale")
 
     @dds_scales.setter
-    def dds_scales(self,value):
-        self.update_dds("scale",value)
+    def dds_scales(self, value):
+        self.update_dds("scale", value)
 
     @property
     def dds_enabled(self):
@@ -63,5 +64,5 @@ class dds(attribute):
         return self.read_dds("raw")
 
     @dds_enabled.setter
-    def dds_enabled(self,value):
-        self.update_dds("raw",value)
+    def dds_enabled(self, value):
+        self.update_dds("raw", value)
